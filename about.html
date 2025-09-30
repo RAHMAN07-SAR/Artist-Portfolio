@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — RedesCreation | Cartoons & Comics — Banguluru</title>
+  <meta name="description" content="About RedesCreation — artist portfolio for cartoons, comics and character design. Based in Banguluru." />
+  <meta name="keywords" content="cartoon, comics, character design, illustration, animation, RedesCreation, Banguluru" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Tailwind CDN for prototype -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Custom utilities and styles for the page (small CSS on top of Tailwind) */
+    :root {
+      --accent: #f59e0b; /* amber-500 */
+      --bg-deep: #7c1d12; /* deep warm red */
+      --bg-mid: #b23a17;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: linear-gradient(180deg,var(--bg-deep) 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* container width requested */
+    .max-w-6x1 { max-width: 1220px; }
+
+    /* hero overlay mask */
+    .hero-mask {
+      background: linear-gradient(180deg, rgba(12,12,12,0.1), rgba(12,12,12,0.7));
+    }
+
+    /* reveal animation */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* slow rotation for decoration */
+    @keyframes slowRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .spin-slow { animation: slowRotate 20s linear infinite; }
+
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.9); z-index: 80; padding: 20px; }
+    .lightbox.show { display: flex; }
+    .lightbox img { max-width: 92%; max-height: 86%; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
+
+    /* mobile menu slide */
+    #mobileMenu { transition: transform .35s cubic-bezier(.2,.9,.2,1); transform: translateX(-110%); }
+    #mobileMenu.open { transform: translateX(0%); }
+
+    /* testimonial track */
+    .testi-track { transition: transform .6s cubic-bezier(.2,.9,.2,1); display: flex; }
+
+    /* visually-hidden for accessibility */
+    .sr-only { position:absolute!important;height:1px;width:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+
+    /* small decorative floating badges */
+    .floating-badge { transform: rotate(-10deg); }
+
+    /* hero headline for very wide screens */
+    @media (min-width: 1280px) { .hero-headline { font-size: 7.2rem; line-height: .88; } }
+
+    /* focus outline */
+    :focus { outline: 3px solid rgba(245,158,11,0.9); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- skip link -->
+  <a class="sr-only focus:not-sr-only p-2 bg-yellow-400 text-black" href="#content">Skip to content</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="w-full fixed top-0 left-0 z-50">
+    <div class="max-w-6x1 mx-auto flex items-center justify-between px-6 py-4 bg-black/40 backdrop-blur-md rounded-b-lg shadow-md">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3" aria-label="RedesCreation home">
+        <!-- simple circular logo -->
+        <svg width="46" height="26" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="22" cy="24" rx="20" ry="11" fill="white" /></svg>
+        <span class="font-bold text-white text-xl">RedesCreation</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex gap-8 items-center text-sm font-medium">
+        <a href="index.html" class="hover:text-amber-400 transition">Home</a>
+        <a href="gallery.html" class="hover:text-amber-400 transition">Pages</a>
+        <a href="exhibition.html" class="hover:text-amber-400 transition">Portfolio</a>
+        <a href="about.html" class="hover:text-amber-400 transition">About</a>
+        <a href="blog.html" class="hover:text-amber-400 transition">Blog</a>
+        <a href="contact.html" class="hover:text-amber-400 transition">contact</a>
+      </nav>
+
+      <!-- Right controls -->
+      <div class="flex items-center gap-3">
+        <button id="searchBtn" aria-label="Open search" class="hidden md:inline p-2 rounded-full hover:bg-white/10 transition"></button>
+        <div class="hidden md:flex gap-2">
+          <a href="#contact" class="bg-amber-400 px-4 py-2 rounded text-black font-semibold hover:scale-105 transition">Contact</a>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button id="hamburger" aria-label="Open menu" class="md:hidden p-2 bg-white/5 rounded">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE SLIDEOUT -->
+    <div id="mobileMenu" class="fixed inset-y-0 left-0 w-80 transform -translate-x-full transition-transform z-60">
+      <div class="h-full bg-black/95 text-white p-6">
+        <div class="flex items-center justify-between">
+          <div class="font-bold text-lg">RedesCreation</div>
+          <button id="closeMobile" aria-label="Close menu" class="p-2">✕</button>
+        </div>
+        <nav class="mt-6 flex flex-col gap-3">
+          <a href="index.html" class="py-2 border-b border-white/5">Home</a>
+          <a href="gallery.html" class="py-2 border-b border-white/5">Pages</a>
+          <a href="exhibition.html" class="py-2 border-b border-white/5">Portfolio</a>
+          <a href="about.html" class="py-2 border-b border-white/5">About</a>
+          <a href="blog.html" class="py-2 border-b border-white/5">Blog</a>
+          <a href="contact.html" class="py-2 border-b border-white/5">Contact</a>
+        </nav>
+
+        <div class="mt-8">
+          <div class="text-sm mb-2">Follow</div>
+          <div class="flex gap-3">
+            <a href="#" aria-label="instagram" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="twitter" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating right side tools (like reference) -->
+  <div class="fixed right-6 top-1/3 flex flex-col gap-3 z-40">
+    <a href="shop.html" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-110 transition" aria-label="Shop"></a>
+    <a href="contact.html" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-110 transition" aria-label="Contact"></a>
+    <a href="portfolio.html" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-110 transition" aria-label="Portfolio"></a>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main id="content" class="mt-20">
+
+    <!-- HERO -->
+    <section class="hero-mask min-h-[70vh] flex items-center">
+      <div class="max-w-6x1 mx-auto px-6 w-full">
+        <div class="grid grid-cols-12 gap-6 items-center">
+          <div class="col-span-12 md:col-span-7">
+            <h1 class="hero-headline font-extrabold text-6xl md:text-7xl leading-tight tracking-tight">ABOUT <span class="block">REDESCREATION</span></h1>
+            <p class="mt-6 max-w-xl text-sm md:text-base uppercase tracking-wider">We craft playful characters, vibrant illustrations and short animations that capture imagination.</p>
+            <div class="mt-8 flex gap-4 items-center">
+              <a href="#team" class="bg-yellow-400 text-black px-5 py-3 rounded font-semibold shadow hover:scale-105 transition">Meet the Team</a>
+              <a href="#contact" class="underline">Contact us →</a>
+            </div>
+            <div class="mt-6 flex gap-3">
+              <span class="inline-block bg-white/10 px-3 py-1 rounded floating-badge">Instagram</span>
+              <span class="inline-block bg-white/10 px-3 py-1 rounded floating-badge">Twitter</span>
+              <span class="inline-block bg-white/10 px-3 py-1 rounded floating-badge">ArtStation</span>
+            </div>
+          </div>
+
+          <div class="col-span-12 md:col-span-5 flex justify-end relative">
+            <!-- use the uploaded image here -->
+            <img src="https://i.pinimg.com/originals/b1/e1/3b/b1e13be9655575861ed75a62a8f32992.jpg" alt="Artist portrait" class="w-64 md:w-80 rounded-lg shadow-2xl transform hover:scale-105 transition" loading="lazy" />
+            <div class="absolute -right-10 top-12 w-28 h-28 rounded-lg bg-yellow-400/20 flex items-center justify-center spin-slow">★</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT STATEMENT -->
+    <section id="about-statement" class="py-16">
+      <div class="max-w-6x1 mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold">The Story</h2>
+          <p class="mt-4 text-sm leading-relaxed">RedesCreation started as a small sketchbook and a love for character-driven narratives. Over the years it evolved into a full studio producing cartoons, comics, and animated shorts for brands and storytellers across the globe. Our approach emphasizes shape language, color storytelling, and emotional resonance.</p>
+          <p class="mt-4 text-sm leading-relaxed">We work with authors, indie studios, and commercial brands to develop characters that stand the test of time — both playful and memorable. From initial thumbnail sketches to final vector-ready assets, our pipeline is optimized for both creativity and clarity.</p>
+
+          <div class="mt-6 flex gap-3">
+            <a href="#portfolio" class="px-5 py-3 bg-yellow-400 text-black rounded font-semibold hover:scale-105 transition">View Portfolio</a>
+            <a href="#services" class="px-5 py-3 border border-white/10 rounded hover:bg-white/10 transition">Our Services</a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <img src="https://picsum.photos/seed/p1/600/450" alt="work sample" class="w-full h-40 object-cover rounded-lg shadow-lg hover:scale-105 transition" />
+          <img src="https://picsum.photos/seed/p2/600/450" alt="work sample" class="w-full h-40 object-cover rounded-lg shadow-lg hover:scale-105 transition" />
+          <img src="https://picsum.photos/seed/p3/600/450" alt="work sample" class="w-full h-40 object-cover rounded-lg shadow-lg hover:scale-105 transition" />
+          <img src="https://picsum.photos/seed/p4/600/450" alt="work sample" class="w-full h-40 object-cover rounded-lg shadow-lg hover:scale-105 transition" />
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION & VALUES -->
+    <section id="mission" class="py-16 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <div class="text-center mb-8">
+          <h3 class="text-3xl font-bold">Mission & Values</h3>
+          <p class="text-sm opacity-80 mt-2">Design with heart, deliver with clarity.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <article class="p-6 bg-black/20 rounded-2xl hover:shadow-2xl transition reveal">
+            <h4 class="font-semibold text-xl">Creativity</h4>
+            <p class="mt-3 text-sm opacity-80">We place bold ideas first and refine them through craft and iteration.</p>
+          </article>
+
+          <article class="p-6 bg-black/20 rounded-2xl hover:shadow-2xl transition reveal">
+            <h4 class="font-semibold text-xl">Collaboration</h4>
+            <p class="mt-3 text-sm opacity-80">Working close with clients, we co-create and stay aligned with project goals.</p>
+          </article>
+
+          <article class="p-6 bg-black/20 rounded-2xl hover:shadow-2xl transition reveal">
+            <h4 class="font-semibold text-xl">Delivery</h4>
+            <p class="mt-3 text-sm opacity-80">Reliable timelines and clear file handoffs make projects stress-free.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES / WHAT WE DO -->
+    <section id="services" class="py-16">
+      <div class="max-w-6x1 mx-auto px-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold">What we do</h2>
+          <p class="text-sm opacity-80">Character art, comics, illustrations and short animations.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 bg-black/20 rounded-2xl hover:-translate-y-2 hover:shadow-2xl transition reveal">
+            <div class="h-40 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg mb-4 flex items-center justify-center text-black font-semibold">Character Design</div>
+            <h4 class="font-semibold">Characters</h4>
+            <p class="mt-2 text-sm opacity-80">Full concept, turnaround and final assets suitable for animation or print.</p>
+          </div>
+
+          <div class="p-6 bg-black/20 rounded-2xl hover:-translate-y-2 hover:shadow-2xl transition reveal">
+            <div class="h-40 bg-gradient-to-br from-green-400 to-teal-500 rounded-lg mb-4 flex items-center justify-center text-black font-semibold">Illustration</div>
+            <h4 class="font-semibold">Illustration</h4>
+            <p class="mt-2 text-sm opacity-80">Editorial and campaign illustrations with strong narrative focus.</p>
+          </div>
+
+          <div class="p-6 bg-black/20 rounded-2xl hover:-translate-y-2 hover:shadow-2xl transition reveal">
+            <div class="h-40 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-lg mb-4 flex items-center justify-center text-black font-semibold">Animation</div>
+            <h4 class="font-semibold">Animation</h4>
+            <p class="mt-2 text-sm opacity-80">Short form animation, looping reels and story-driven sequences.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO PREVIEW -->
+    <section id="portfolio-preview" class="py-16 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold">Portfolio preview</h2>
+          <a href="portfolio.html" class="text-yellow-400 underline">View full portfolio →</a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <figure class="rounded-lg overflow-hidden border border-white/6 transform hover:scale-105 transition reveal">
+            <img src="https://picsum.photos/seed/a1/900/700" alt="Portfolio sample" class="w-full h-56 object-cover cursor-pointer" onclick="openLightbox(this.src,'Portfolio image 1')">
+            <figcaption class="p-4 bg-black/20">
+              <h4 class="font-semibold">Girl Character</h4>
+              <p class="text-xs opacity-80">Character portrait with warm tones.</p>
+            </figcaption>
+          </figure>
+
+          <figure class="rounded-lg overflow-hidden border border-white/6 transform hover:scale-105 transition reveal">
+            <img src="https://picsum.photos/seed/a2/900/700" alt="Portfolio sample" class="w-full h-56 object-cover cursor-pointer" onclick="openLightbox(this.src,'Portfolio image 2')">
+            <figcaption class="p-4 bg-black/20">
+              <h4 class="font-semibold">Furry Mascot</h4>
+              <p class="text-xs opacity-80">Design exploration for a marketable mascot.</p>
+            </figcaption>
+          </figure>
+
+          <figure class="rounded-lg overflow-hidden border border-white/6 transform hover:scale-105 transition reveal">
+            <img src="https://picsum.photos/seed/a3/900/700" alt="Portfolio sample" class="w-full h-56 object-cover cursor-pointer" onclick="openLightbox(this.src,'Portfolio image 3')">
+            <figcaption class="p-4 bg-black/20">
+              <h4 class="font-semibold">Fantasy Poster</h4>
+              <p class="text-xs opacity-80">Poster art for an indie campaign.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE / MILESTONES -->
+    <section id="timeline" class="py-16">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-6">Milestones</h2>
+        <div class="space-y-8">
+          <div class="flex items-start gap-6">
+            <div class="w-12 h-12 bg-yellow-400 text-black rounded-full flex items-center justify-center font-bold">2012</div>
+            <div class="flex-1 bg-black/20 p-6 rounded-2xl reveal">
+              <h4 class="font-semibold">First freelance project</h4>
+              <p class="mt-2 text-sm opacity-80">A short comic that introduced the character language we use today.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-6">
+            <div class="w-12 h-12 bg-yellow-400 text-black rounded-full flex items-center justify-center font-bold">2016</div>
+            <div class="flex-1 bg-black/20 p-6 rounded-2xl reveal">
+              <h4 class="font-semibold">Published comic series</h4>
+              <p class="mt-2 text-sm opacity-80">A series that caught attention in local festivals and online communities.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-6">
+            <div class="w-12 h-12 bg-yellow-400 text-black rounded-full flex items-center justify-center font-bold">2021</div>
+            <div class="flex-1 bg-black/20 p-6 rounded-2xl reveal">
+              <h4 class="font-semibold">Studio launch</h4>
+              <p class="mt-2 text-sm opacity-80">Formed RedesCreation as a studio and began collaborations with brands and authors worldwide.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team" class="py-16 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-6">Team & Collaborators</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <!-- Many team cards to push content length and show variety -->
+          <div class="bg-black/20 p-4 rounded-lg text-center hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/t1/200" alt="Alex" class="mx-auto rounded-full w-28 h-28 mb-3 object-cover" />
+            <h4 class="font-semibold">Alex</h4>
+            <p class="text-xs opacity-80">Illustrator</p>
+          </div>
+
+          <div class="bg-black/20 p-4 rounded-lg text-center hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/t2/200" alt="Maya" class="mx-auto rounded-full w-28 h-28 mb-3 object-cover" />
+            <h4 class="font-semibold">Maya</h4>
+            <p class="text-xs opacity-80">Animator</p>
+          </div>
+
+          <div class="bg-black/20 p-4 rounded-lg text-center hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/t3/200" alt="Leo" class="mx-auto rounded-full w-28 h-28 mb-3 object-cover" />
+            <h4 class="font-semibold">Leo</h4>
+            <p class="text-xs opacity-80">Storyboard artist</p>
+          </div>
+
+          <div class="bg-black/20 p-4 rounded-lg text-center hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/t4/200" alt="Sam" class="mx-auto rounded-full w-28 h-28 mb-3 object-cover" />
+            <h4 class="font-semibold">Sam</h4>
+            <p class="text-xs opacity-80">Colorist</p>
+          </div>
+
+          <div class="bg-black/20 p-4 rounded-lg text-center hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/t5/200" alt="Tina" class="mx-auto rounded-full w-28 h-28 mb-3 object-cover" />
+            <h4 class="font-semibold">Tina</h4>
+            <p class="text-xs opacity-80">Designer</p>
+          </div>
+
+          <div class="bg-black/20 p-4 rounded-lg text-center hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/t6/200" alt="Ravi" class="mx-auto rounded-full w-28 h-28 mb-3 object-cover" />
+            <h4 class="font-semibold">Ravi</h4>
+            <p class="text-xs opacity-80">Animation lead</p>
+          </div>
+
+          <div class="bg-black/20 p-4 rounded-lg text-center hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/t7/200" alt="Priya" class="mx-auto rounded-full w-28 h-28 mb-3 object-cover" />
+            <h4 class="font-semibold">Priya</h4>
+            <p class="text-xs opacity-80">Project manager</p>
+          </div>
+
+          <div class="bg-black/20 p-4 rounded-lg text-center hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/t8/200" alt="Ish" class="mx-auto rounded-full w-28 h-28 mb-3 object-cover" />
+            <h4 class="font-semibold">Ish</h4>
+            <p class="text-xs opacity-80">Sound designer</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS & STATS -->
+    <section id="skills" class="py-16">
+      <div class="max-w-6x1 mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h2 class="text-3xl font-bold">Skills & Tools</h2>
+          <p class="mt-4 text-sm opacity-80">We use industry standard tools and processes for art, animation and production.</p>
+
+          <div class="mt-6 space-y-4">
+            <div>
+              <div class="flex justify-between text-sm mb-1"><span>Illustration</span><span>92%</span></div>
+              <div class="w-full bg-white/10 h-3 rounded-full">
+                <div class="bg-yellow-400 h-3 rounded-full progress-bar" style="width:0%" data-target="92"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-sm mb-1"><span>Animation</span><span>78%</span></div>
+              <div class="w-full bg-white/10 h-3 rounded-full">
+                <div class="bg-yellow-400 h-3 rounded-full progress-bar" style="width:0%" data-target="78"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-sm mb-1"><span>Comic Design</span><span>96%</span></div>
+              <div class="w-full bg-white/10 h-3 rounded-full">
+                <div class="bg-yellow-400 h-3 rounded-full progress-bar" style="width:0%" data-target="96"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-2xl font-semibold">Tools we use</h3>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li>• Procreate</li>
+            <li>• Photoshop</li>
+            <li>• Illustrator</li>
+            <li>• After Effects</li>
+            <li>• Spine / Spriter (for game animations)</li>
+          </ul>
+
+          <div class="mt-8 grid grid-cols-2 gap-4">
+            <div class="p-4 bg-black/20 rounded-lg text-center">
+              <div class="text-3xl font-bold">20+</div>
+              <div class="text-sm opacity-80">Years experience (combined)</div>
+            </div>
+            <div class="p-4 bg-black/20 rounded-lg text-center">
+              <div class="text-3xl font-bold">500+</div>
+              <div class="text-sm opacity-80">Illustrations delivered</div>
+            </div>
+            <div class="p-4 bg-black/20 rounded-lg text-center">
+              <div class="text-3xl font-bold">120+</div>
+              <div class="text-sm opacity-80">Characters designed</div>
+            </div>
+            <div class="p-4 bg-black/20 rounded-lg text-center">
+              <div class="text-3xl font-bold">40+</div>
+              <div class="text-sm opacity-80">Animation reels</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS (carousel) -->
+    <section id="testimonials" class="py-16 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold">Testimonials</h2>
+          <p class="text-sm opacity-80">What clients say</p>
+        </div>
+
+        <div class="relative overflow-hidden">
+          <div id="testiTrack" class="testi-track">
+            <div class="min-w-full p-6 bg-black/20 rounded-2xl mr-6">
+              <p class="text-lg">“The character set boosted our campaign engagement by 63% and the delivery was stellar.”</p>
+              <footer class="mt-4 font-semibold">— Studio Luna</footer>
+            </div>
+
+            <div class="min-w-full p-6 bg-black/20 rounded-2xl mr-6">
+              <p class="text-lg">“Fast turnaround, clear feedback loops and a delightful design sensibility.”</p>
+              <footer class="mt-4 font-semibold">— Indie Author</footer>
+            </div>
+
+            <div class="min-w-full p-6 bg-black/20 rounded-2xl mr-6">
+              <p class="text-lg">“A joy to work with — highly competent and creative.”</p>
+              <footer class="mt-4 font-semibold">— Brand Y</footer>
+            </div>
+          </div>
+
+          <div class="mt-6 flex gap-3 justify-center">
+            <button id="prevTesti" class="px-3 py-2 bg-white/10 rounded">◀</button>
+            <button id="nextTesti" class="px-3 py-2 bg-white/10 rounded">▶</button>
+            <button id="autoTesti" class="px-3 py-2 bg-yellow-400 text-black rounded">Autoplay</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING PREVIEW -->
+    <section id="pricing" class="py-16">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-4">Pricing Example</h2>
+        <p class="text-sm opacity-80 mb-6">Transparent packages — get a tailored quote for bigger projects.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 bg-black/20 rounded-2xl hover:shadow-2xl transition reveal">
+            <div class="font-semibold text-sm bg-white/6 inline-block px-3 py-1 rounded">Starter</div>
+            <h3 class="mt-4 text-2xl font-bold">₹10,000</h3>
+            <ul class="mt-4 text-sm space-y-2">
+              <li>• 1 character concept</li>
+              <li>• 1 revision</li>
+              <li>• Web-ready deliverable</li>
+            </ul>
+            <a href="#contact" class="inline-block mt-4 px-4 py-2 bg-yellow-400 text-black rounded">Purchase</a>
+          </div>
+
+          <div class="p-6 bg-yellow-400 text-black rounded-2xl transform scale-100 md:scale-105 shadow-lg reveal">
+            <div class="font-semibold text-sm inline-block px-3 py-1 rounded">Popular</div>
+            <h3 class="mt-4 text-2xl font-bold">₹30,000</h3>
+            <ul class="mt-4 text-sm space-y-2">
+              <li>• 3 characters</li>
+              <li>• 3 revisions</li>
+              <li>• Commercial license</li>
+            </ul>
+            <a href="#contact" class="inline-block mt-4 px-4 py-2 bg-black text-white rounded">Purchase</a>
+          </div>
+
+          <div class="p-6 bg-black/20 rounded-2xl hover:shadow-2xl transition reveal">
+            <div class="font-semibold text-sm bg-white/6 inline-block px-3 py-1 rounded">Studio</div>
+            <h3 class="mt-4 text-2xl font-bold">Custom</h3>
+            <ul class="mt-4 text-sm space-y-2">
+              <li>• Full project</li>
+              <li>• Animation & storyboards</li>
+              <li>• Dedicated support</li>
+            </ul>
+            <a href="#contact" class="inline-block mt-4 px-4 py-2 bg-yellow-400 text-black rounded">Request Quote</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG PREVIEW -->
+    <section id="blog-preview" class="py-16 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold">From the Blog</h2>
+          <a href="blog.html" class="text-yellow-400 underline">See all posts →</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <article class="bg-black/20 rounded-2xl overflow-hidden hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/b1/900/600" alt="blog 1" class="w-full h-44 object-cover">
+            <div class="p-4">
+              <h4 class="font-semibold">Designing Memorable Characters</h4>
+              <p class="text-xs opacity-80 mt-2">Shapes, silhouettes and simple color systems.</p>
+              <a href="#" class="text-yellow-400 mt-3 inline-block">Read →</a>
+            </div>
+          </article>
+
+          <article class="bg-black/20 rounded-2xl overflow-hidden hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/b2/900/600" alt="blog 2" class="w-full h-44 object-cover">
+            <div class="p-4">
+              <h4 class="font-semibold">From Sketch to Final</h4>
+              <p class="text-xs opacity-80 mt-2">A case study on the illustration pipeline.</p>
+              <a href="#" class="text-yellow-400 mt-3 inline-block">Read →</a>
+            </div>
+          </article>
+
+          <article class="bg-black/20 rounded-2xl overflow-hidden hover:shadow-2xl transition reveal">
+            <img src="https://picsum.photos/seed/b3/900/600" alt="blog 3" class="w-full h-44 object-cover">
+            <div class="p-4">
+              <h4 class="font-semibold">Color Systems for Cartoons</h4>
+              <p class="text-xs opacity-80 mt-2">How to pick palettes that work across platforms.</p>
+              <a href="#" class="text-yellow-400 mt-3 inline-block">Read →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-16">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-4">FAQ</h2>
+        <p class="text-sm opacity-80 mb-6">Common questions about process, revisions and licensing.</p>
+
+        <div class="space-y-4">
+          <details class="p-4 bg-black/20 rounded" open>
+            <summary class="cursor-pointer font-semibold flex justify-between items-center">How long does a project take? <span class="caret">▾</span></summary>
+            <div class="mt-3 text-sm opacity-80">Small projects: 1-2 weeks. Illustration series or animation: 3-8 weeks, depending on scope.</div>
+          </details>
+
+          <details class="p-4 bg-black/20 rounded">
+            <summary class="cursor-pointer font-semibold flex justify-between items-center">What is your revision policy? <span class="caret">▾</span></summary>
+            <div class="mt-3 text-sm opacity-80">Starter includes 1 revision, Pro includes 2-3. Studio work offers custom revision terms.</div>
+          </details>
+
+          <details class="p-4 bg-black/20 rounded">
+            <summary class="cursor-pointer font-semibold flex justify-between items-center">Do you provide source files? <span class="caret">▾</span></summary>
+            <div class="mt-3 text-sm opacity-80">Yes — PSD, layered files or vector formats available on request depending on the package.</div>
+          </details>
+
+          <details class="p-4 bg-black/20 rounded">
+            <summary class="cursor-pointer font-semibold flex justify-between items-center">Can you animate existing characters? <span class="caret">▾</span></summary>
+            <div class="mt-3 text-sm opacity-80">We can rig and animate pre-existing assets or offer redesigns for animation-friendly splits.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-16 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6 grid md:grid-cols-2 gap-8">
+        <div>
+          <h2 class="text-3xl font-bold">Get in touch</h2>
+          <p class="text-sm opacity-80 mt-2">Based in Banguluru — available for commissions, collabs and studio projects.</p>
+
+          <form id="contactForm" class="mt-6 bg-black/20 p-6 rounded-lg space-y-4" aria-label="Contact form">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input name="name" type="text" placeholder="Name" required class="p-3 rounded bg-black/10 outline-none" />
+              <input name="email" type="email" placeholder="Email" required class="p-3 rounded bg-black/10 outline-none" />
+            </div>
+            <div>
+              <input name="phone" type="tel" placeholder="Phone" value="+91 96766 59153" class="p-3 rounded bg-black/10 outline-none w-full" />
+            </div>
+            <div>
+              <textarea name="message" rows="6" placeholder="Message" required class="p-3 rounded bg-black/10 outline-none w-full"></textarea>
+            </div>
+            <div>
+              <button type="submit" class="px-6 py-3 bg-yellow-400 text-black rounded font-semibold hover:scale-105 transition">Send Message</button>
+            </div>
+            <p class="text-xs opacity-80 mt-2">Phone: <a href="tel:+919676659153" class="underline">+91 96766 59153</a> • Email: <a href="mailto:info@redescreation.in" class="underline">info@redescreation.in</a> • Domain: <a href="https://www.redescreation.in" class="underline">www.redescreation.in</a></p>
+          </form>
+        </div>
+
+        <div>
+          <h3 class="font-semibold">Location</h3>
+          <p class="text-sm opacity-80">Banguluru</p>
+          <div class="mt-4 w-full h-64 bg-black/20 rounded overflow-hidden">
+            <iframe title="Banguluru map" src="https://www.google.com/maps?q=Banguluru&output=embed" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>
+          </div>
+
+          <div class="mt-6 p-4 bg-black/20 rounded">
+            <p class="text-sm"><strong>Phone:</strong> <a href="tel:+919676659153" class="underline">+91 96766 59153</a></p>
+            <p class="text-sm"><strong>Email:</strong> <a href="mailto:info@redescreation.in" class="underline">info@redescreation.in</a></p>
+            <p class="text-sm"><strong>Domain:</strong> <a href="https://www.redescreation.in" class="underline">www.redescreation.in</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <button id="lbClose" class="absolute top-6 right-8 text-white text-3xl font-bold" aria-label="Close">✕</button>
+    <img id="lbImg" src="" alt="Expanded art" />
+  </div>
+
+ <!-- FOOTER -->
+  <footer class="bg-black/60 py-12 mt-12">
+    <div class="max-w-6x1 mx-auto px-6 grid md:grid-cols-4 gap-6">
+      <div>
+        <h4 class="font-bold text-lg">RedesCreation</h4>
+        <p class="text-sm mt-2">Cartoons & Comics studio — Banguluru. Character design, illustration & animation.</p>
+      </div>
+
+      <div>
+        <h5 class="font-semibold mb-2">Pages</h5>
+        <ul class="text-sm space-y-1">
+          <li><a href="index.html" class="underline">Home</a></li>
+          <li><a href="about.html" class="underline">About</a></li>
+          <li><a href="gallery.html" class="underline">Gallery</a></li>
+          <li><a href="blog.html" class="underline">Blog</a></li>
+          <li><a href="contact.html" class="underline">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-semibold mb-2">Contact</h5>
+        <p class="text-sm">Banguluru</p>
+        <p class="text-sm">Phone: +91 96766 59153</p>
+        <p class="text-sm">Email: info@redescreation.in</p>
+      </div> 
+
+      <div>
+        <h5 class="font-semibold mb-2">Follow</h5>
+        <div class="flex gap-3">
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-6x1 mx-auto px-6 text-center mt-8 text-sm opacity-80">
+      © <span id="year"></span> RedesCreation — All rights reserved.
+    </div>
+  </footer>
+
+
+  <!-- Back to top -->
+  <a class="fixed bottom-6 right-6 bg-black text-white p-3 rounded-full shadow-lg" href="#content" aria-label="Back to top">↑</a>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Insert current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggles
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMobile = document.getElementById('closeMobile');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.add('open');
+      mobileMenu.style.transform = 'translateX(0%)';
+    });
+    closeMobile.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      mobileMenu.style.transform = 'translateX(-110%)';
+    });
+
+    // IntersectionObserver for reveals
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => obs.observe(r));
+
+    // Lightbox functions
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
+
+    function openLightbox(src, alt='Artwork') {
+      lbImg.src = src;
+      lbImg.alt = alt;
+      lightbox.classList.add('show');
+      lightbox.setAttribute('aria-hidden','false');
+      lbClose.focus();
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('show');
+      lightbox.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if(e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeLightbox();
+    });
+
+    // Progress bars animate when visible
+    const progressBars = document.querySelectorAll('.progress-bar');
+    const pbObserver = new IntersectionObserver((entries, o) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          const el = entry.target;
+          const target = el.getAttribute('data-target') || el.style.width.replace('%','');
+          el.style.width = target + '%';
+          o.unobserve(el);
+        }
+      });
+    }, { threshold: 0.2 });
+    progressBars.forEach(pb => pbObserver.observe(pb));
+
+    // Testimonials carousel simple
+    const testiTrack = document.getElementById('testiTrack');
+    const nextTesti = document.getElementById('nextTesti');
+    const prevTesti = document.getElementById('prevTesti');
+    const autoTesti = document.getElementById('autoTesti');
+    let testiIndex = 0;
+    let testiAuto = null;
+    function updateTesti() {
+      testiTrack.style.transform = `translateX(-${testiIndex * 100}%)`;
+    }
+    // create prev/next buttons if missing (some setups may not render them)
+    if(prevTesti && nextTesti) {
+      // already provided in DOM
+    } else {
+      // fallback controls
+      const controls = document.createElement('div');
+      controls.className = 'mt-4 flex gap-3';
+      const p = document.createElement('button'); p.textContent = 'Prev'; p.className='px-3 py-2 bg-white/10 rounded'; p.onclick = ()=>{ testiIndex=(testiIndex-1+testiTrack.children.length)%testiTrack.children.length; updateTesti(); };
+      const n = document.createElement('button'); n.textContent = 'Next'; n.className='px-3 py-2 bg-white/10 rounded'; n.onclick = ()=>{ testiIndex=(testiIndex+1)%testiTrack.children.length; updateTesti(); };
+      controls.appendChild(p); controls.appendChild(n);
+      testiTrack.parentElement.appendChild(controls);
+    }
+    // wire up if present
+    if(nextTesti) nextTesti.addEventListener('click', () => { testiIndex = (testiIndex+1) % testiTrack.children.length; updateTesti(); });
+    if(prevTesti) prevTesti.addEventListener('click', () => { testiIndex = (testiIndex-1 + testiTrack.children.length) % testiTrack.children.length; updateTesti(); });
+    if(autoTesti) {
+      autoTesti.addEventListener('click', () => {
+        if(testiAuto) { clearInterval(testiAuto); testiAuto = null; autoTesti.textContent='Autoplay'; autoTesti.classList.remove('bg-red-500'); }
+        else { testiAuto = setInterval(()=> { nextTesti.click(); }, 4200); autoTesti.textContent='Pause'; autoTesti.classList.add('bg-red-500'); }
+      });
+    }
+
+    // Portfolio image click handled via inline onclick openLightbox()
+
+    // Filter buttons demo (if used on this page)
+    document.querySelectorAll('.filterBtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filterBtn').forEach(b => b.classList.remove('bg-white/10'));
+        btn.classList.add('bg-white/10');
+        const f = btn.getAttribute('data-filter');
+        document.querySelectorAll('#gallery > figure').forEach(fig => {
+          if(!f || f === 'all' || fig.dataset.category === f) {
+            fig.style.display = 'block';
+          } else {
+            fig.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Contact form (demo) — prevent real submission
+    const contactForm = document.getElementById('contactForm');
+    if(contactForm){
+      contactForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = this.name?.value || '';
+        const email = this.email?.value || '';
+        const message = this.message?.value || '';
+        if(!name || !email || !message) {
+          alert('Please fill required fields (demo).');
+          return;
+        }
+        alert('Thanks ' + name + '! (demo submission)');
+        this.reset();
+      });
+    }
+
+    // smooth anchor scrolling for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        if(href.length > 1){
+          const el = document.querySelector(href);
+          if(el) {
+            e.preventDefault();
+            el.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        }
+      });
+    }); 
+
+    // initial reveals
+    window.addEventListener('load', ()=> {
+      document.querySelectorAll('.reveal').forEach((r,i) => {
+        setTimeout(()=> r.classList.add('visible'), i*80);
+      });
+      // set some default progress widths for browsers not observing quickly
+      document.querySelectorAll('.progress-bar').forEach(pb => {
+        const t = pb.getAttribute('data-target') || '80';
+        pb.style.width = t + '%';
+      });
+    });
+
+  </script>
+
+</body>
+</html>

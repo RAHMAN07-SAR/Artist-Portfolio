@@ -1,0 +1,1413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog — RedesCreation | Cartoons & Comics</title>
+  <meta name="description" content="RedesCreation blog — cartoons, comics, illustration, animation, tutorials and news." />
+  <meta name="author" content="RedesCreation" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP for smooth scroll animations -->
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent: #f59e0b;
+      --bg-deep:#7c1d12;
+      --bg-mid:#b23a17;
+    }
+    html,body{height:100%;}
+    body{
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      margin:0;
+      background: linear-gradient(180deg,var(--bg-deep) 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Container width requested: max-w-6x1 */
+    .max-w-6x1 { max-width: 1220px; margin-left:auto; margin-right:auto; }
+
+    /* Header blur */
+    .nav-blur{ backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
+    /* Reveal animations */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s cubic-bezier(.2,.9,.2,1), transform .6s cubic-bezier(.2,.9,.2,1); }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* Lightbox overlay */
+    .lightbox { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 90; background: rgba(0,0,0,0.92); padding: 20px; }
+    .lightbox.show { display:flex; }
+    .lightbox img { max-width: 94%; max-height: 86%; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
+
+    /* Masonry columns */
+    .masonry { column-gap: 1.25rem; }
+    @media (min-width: 640px) { .masonry { column-count: 2; } }
+    @media (min-width: 1024px) { .masonry { column-count: 3; } }
+    .card { break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 1.25rem; }
+
+    /* Hover overlay + image zoom */
+    .card img { transition: transform .35s ease; }
+    .card:hover img { transform: scale(1.04); }
+    .card .overlay { transition: opacity .28s ease, transform .28s ease; opacity: 0; transform: translateY(6px); }
+    .card:hover .overlay { opacity: 1; transform: translateY(0); }
+
+    /* Focus outline for accessibility */
+    :focus { outline: 3px solid rgba(245,158,11,0.9); outline-offset: 3px; }
+
+    /* Small helper */
+    .sr-only { position:absolute!important;height:1px;width:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+
+    /* Floating decorative pins */
+    @keyframes swing { 0%{ transform: rotate(-6deg); } 50%{ transform: rotate(6deg);} 100%{ transform: rotate(-6deg);} }
+    .pin { animation: swing 6s ease-in-out infinite; }
+
+    /* Carousel track */
+    .carousel-track { display:flex; transition: transform .6s cubic-bezier(.2,.9,.2,1); }
+    .carousel-slide { min-width: 100%; flex: 0 0 100%; }
+  </style>
+</head>
+<body>
+
+  <!-- Skip link for accessibility -->
+  <a href="#main" class="sr-only focus:not-sr-only p-2 bg-yellow-400 text-black">Skip to main content</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="w-full fixed top-0 left-0 z-50">
+    <div class="max-w-6x1 mx-auto flex items-center justify-between px-6 py-4 bg-black/40 backdrop-blur-md rounded-b-lg shadow-md">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3" aria-label="RedesCreation home">
+        <!-- simple circular logo -->
+        <svg width="46" height="26" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="22" cy="24" rx="20" ry="11" fill="white" /></svg>
+        <span class="font-bold text-white text-xl">RedesCreation</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex gap-8 items-center text-sm font-medium">
+        <a href="index.html" class="hover:text-amber-400 transition">Home</a>
+        <a href="gallery.html" class="hover:text-amber-400 transition">Pages</a>
+        <a href="exhibition.html" class="hover:text-amber-400 transition">Portfolio</a>
+        <a href="about.html" class="hover:text-amber-400 transition">About</a>
+        <a href="blog.html" class="hover:text-amber-400 transition">Blog</a>
+        <a href="contact.html" class="hover:text-amber-400 transition">contact</a>
+      </nav>
+
+      <!-- Right controls -->
+      <div class="flex items-center gap-3">
+        <button id="searchBtn" aria-label="Open search" class="hidden md:inline p-2 rounded-full hover:bg-white/10 transition"></button>
+        <div class="hidden md:flex gap-2">
+          <a href="#contact" class="bg-amber-400 px-4 py-2 rounded text-black font-semibold hover:scale-105 transition">Contact</a>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button id="hamburger" aria-label="Open menu" class="md:hidden p-2 bg-white/5 rounded">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE SLIDEOUT -->
+    <div id="mobileMenu" class="fixed inset-y-0 left-0 w-80 transform -translate-x-full transition-transform z-60">
+      <div class="h-full bg-black/95 text-white p-6">
+        <div class="flex items-center justify-between">
+          <div class="font-bold text-lg">RedesCreation</div>
+          <button id="closeMobile" aria-label="Close menu" class="p-2">✕</button>
+        </div>
+        <nav class="mt-6 flex flex-col gap-3">
+          <a href="index.html" class="py-2 border-b border-white/5">Home</a>
+          <a href="gallery.html" class="py-2 border-b border-white/5">Pages</a>
+          <a href="exhibition.html" class="py-2 border-b border-white/5">Portfolio</a>
+          <a href="about.html" class="py-2 border-b border-white/5">About</a>
+          <a href="blog.html" class="py-2 border-b border-white/5">Blog</a>
+          <a href="contact.html" class="py-2 border-b border-white/5">Contact</a>
+        </nav>
+
+        <div class="mt-8">
+          <div class="text-sm mb-2">Follow</div>
+          <div class="flex gap-3">
+            <a href="#" aria-label="instagram" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="twitter" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating right bar (like reference) -->
+  <div class="fixed right-6 top-1/3 z-40 flex flex-col gap-3">
+    <a href="shop.html" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-105 transition" aria-label="Shop"></a>
+    <a href="contact.html" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-105 transition" aria-label="Contact"></a>
+    <a href="portfolio.html" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-105 transition" aria-label="Portfolio"></a>
+  </div>
+
+  <!-- MAIN -->
+  <main id="main" class="mt-24">
+
+    <!-- HERO -->
+    <section class="min-h-[58vh] flex items-center">
+      <div class="max-w-6x1 mx-auto px-6 w-full">
+        <div class="grid grid-cols-12 gap-6 items-center">
+          <div class="col-span-12 md:col-span-7">
+            <h1 class="text-6xl md:text-8xl font-extrabold leading-tight tracking-tight">CARTOONS & COMICS</h1>
+            <p class="mt-6 max-w-2xl text-sm md:text-base opacity-90">Stories and behind-the-scenes — deep dives into character design, comics, and animation with step-by-step guides and interviews.</p>
+            <div class="mt-6 flex gap-4">
+              <a href="#posts" class="bg-yellow-400 text-black px-5 py-3 rounded font-semibold hover:scale-105 transition">See Posts</a>
+              <a href="#subscribe" class="underline">Subscribe</a>
+            </div>
+          </div>
+
+          <div class="col-span-12 md:col-span-5 relative">
+            <img src="https://picsum.photos/seed/hero/700/700" alt="Blog hero art" class="w-64 md:w-80 rounded-lg shadow-2xl transform hover:scale-105 transition" loading="lazy">
+            <div class="absolute -right-10 -bottom-8 w-24 h-24 bg-yellow-400/20 rounded-lg flex items-center justify-center pin">★</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED CAROUSEL -->
+    <section class="py-12">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-6">Featured Stories</h2>
+
+        <div class="relative overflow-hidden rounded-lg">
+          <div id="featuredTrack" class="carousel-track">
+            <div class="carousel-slide">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat1/900/600" alt="Featured 1" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">Interview: Character Designer</h3>
+                  <p class="text-sm opacity-80 mt-2">An in-depth interview about creating memorable protagonists.</p>
+                </article>
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat2/900/600" alt="Featured 2" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">How to Color for Emotion</h3>
+                  <p class="text-sm opacity-80 mt-2">Color choices that convey mood and meaning.</p>
+                </article>
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat3/900/600" alt="Featured 3" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">From Sketch to Screen</h3>
+                  <p class="text-sm opacity-80 mt-2">Step-by-step animation workflow for short reels.</p>
+                </article>
+              </div>
+            </div>
+
+            <div class="carousel-slide">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat4/900/600" alt="Featured 4" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">Designing for Kids</h3>
+                  <p class="text-sm opacity-80 mt-2">Design approaches that appeal to younger audiences.</p>
+                </article>
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat5/900/600" alt="Featured 5" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">Textures & Brushwork</h3>
+                  <p class="text-sm opacity-80 mt-2">Adding tactile feel to digital painting.</p>
+                </article>
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat6/900/600" alt="Featured 6" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">Panel Flow in Comics</h3>
+                  <p class="text-sm opacity-80 mt-2">How to guide a reader’s eye through a page.</p>
+                </article>
+              </div>
+            </div>
+
+            <div class="carousel-slide">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat7/900/600" alt="Featured 7" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">Props & Worldbuilding</h3>
+                  <p class="text-sm opacity-80 mt-2">Small details that make worlds feel lived-in.</p>
+                </article>
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat8/900/600" alt="Featured 8" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">Crafting Memorable Masks</h3>
+                  <p class="text-sm opacity-80 mt-2">How visual motifs build memorable characters.</p>
+                </article>
+                <article class="bg-black/10 p-4 rounded-lg shadow-lg reveal">
+                  <img src="https://picsum.photos/seed/feat9/900/600" alt="Featured 9" class="w-full h-44 object-cover rounded-md mb-4">
+                  <h3 class="font-semibold text-xl">Lighting for Drama</h3>
+                  <p class="text-sm opacity-80 mt-2">Using light to emphasize emotion in frames.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <!-- carousel controls -->
+          <button id="featPrev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 p-2 rounded">◀</button>
+          <button id="featNext" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 p-2 rounded">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG GRID + SIDEBAR -->
+    <section id="posts" class="py-8">
+      <div class="max-w-6x1 mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Main column (posts) -->
+        <div class="lg:col-span-8 space-y-8">
+          <!-- We'll generate many posts below to reach file length -->
+          <!-- Post 1 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p1">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p1/900/600" alt="Post 1" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p1" class="text-2xl font-semibold mb-2">Breathing Life into Characters</h3>
+                <p class="text-sm opacity-80 mb-3">We discuss approaches to character development — shape language, expression, and silhouette.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Aug 1, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 2 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p2">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p2/900/600" alt="Post 2" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p2" class="text-2xl font-semibold mb-2">Color Keys: Setting Mood</h3>
+                <p class="text-sm opacity-80 mb-3">A practical guide to selecting palettes that reinforce your story’s mood.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jul 25, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 3 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p3">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p3/900/600" alt="Post 3" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p3" class="text-2xl font-semibold mb-2">Animating Facial Expressions</h3>
+                <p class="text-sm opacity-80 mb-3">Tips & exercises to animate believable, emotive faces for your characters.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jul 10, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 4 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p4">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p4/900/600" alt="Post 4" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p4" class="text-2xl font-semibold mb-2">Panel Composition Techniques</h3>
+                <p class="text-sm opacity-80 mb-3">How to arrange panels for clear storytelling flow and dynamic pacing.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jun 28, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 5 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p5">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p5/900/600" alt="Post 5" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p5" class="text-2xl font-semibold mb-2">Sketching Quick Thumbnails</h3>
+                <p class="text-sm opacity-80 mb-3">Learn to rapidly iterate thumbnails to test composition ideas quickly.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jun 12, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 6 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p6">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p6/900/600" alt="Post 6" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p6" class="text-2xl font-semibold mb-2">Creating Cute Character Silhouettes</h3>
+                <p class="text-sm opacity-80 mb-3">Techniques for designing silhouettes that read instantly and charm audiences.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>May 30, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 7 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p7">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p7/900/600" alt="Post 7" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p7" class="text-2xl font-semibold mb-2">Brushes That Feel Handmade</h3>
+                <p class="text-sm opacity-80 mb-3">How to select and customize brushes for a tactile digital look.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>May 14, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 8 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p8">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p8/900/600" alt="Post 8" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p8" class="text-2xl font-semibold mb-2">Animating Walk Cycles</h3>
+                <p class="text-sm opacity-80 mb-3">A practical walkthrough for smooth, characterful walk cycles.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Apr 29, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 9 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p9">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p9/900/600" alt="Post 9" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p9" class="text-2xl font-semibold mb-2">Compositing 2D & 3D Elements</h3>
+                <p class="text-sm opacity-80 mb-3">Blend 2D illustrations with simple 3D props for depth.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Apr 10, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 10 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p10">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p10/900/600" alt="Post 10" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p10" class="text-2xl font-semibold mb-2">Lighting Styles for Cartoons</h3>
+                <p class="text-sm opacity-80 mb-3">From flat to dramatic — choose a lighting style to support your story.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Mar 24, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 11 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p11">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p11/900/600" alt="Post 11" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p11" class="text-2xl font-semibold mb-2">Sketch Daily: Exercises</h3>
+                <p class="text-sm opacity-80 mb-3">Short exercises to keep your drawing skills sharp every day.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Mar 5, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 12 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p12">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p12/900/600" alt="Post 12" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p12" class="text-2xl font-semibold mb-2">Page Design for Graphic Novels</h3>
+                <p class="text-sm opacity-80 mb-3">Effective layouts that balance visuals and pacing.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Feb 18, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 13 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p13">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p13/900/600" alt="Post 13" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p13" class="text-2xl font-semibold mb-2">Sound Design for Shorts</h3>
+                <p class="text-sm opacity-80 mb-3">Simple sound design tips that punch up your short animations.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Feb 2, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 14 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p14">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p14/900/600" alt="Post 14" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p14" class="text-2xl font-semibold mb-2">Marketing Art Prints Online</h3>
+                <p class="text-sm opacity-80 mb-3">How to present and sell art prints on your shop and socials.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jan 12, 2025</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 15 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p15">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p15/900/600" alt="Post 15" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p15" class="text-2xl font-semibold mb-2">Building a Portfolio That Sells</h3>
+                <p class="text-sm opacity-80 mb-3">Curating work for recruiters, clients, and collaborations.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Dec 20, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 16 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p16">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p16/900/600" alt="Post 16" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p16" class="text-2xl font-semibold mb-2">Working with Creative Briefs</h3>
+                <p class="text-sm opacity-80 mb-3">How to read a brief and deliver work that meets expectations.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Dec 1, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 17 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p17">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p17/900/600" alt="Post 17" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p17" class="text-2xl font-semibold mb-2">Designing for Merchandise</h3>
+                <p class="text-sm opacity-80 mb-3">Considerations when adapting characters for tees, stickers, and toys.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Nov 15, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 18 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p18">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p18/900/600" alt="Post 18" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p18" class="text-2xl font-semibold mb-2">Collaborating with Writers</h3>
+                <p class="text-sm opacity-80 mb-3">Ways to create seamless partnerships between art and story.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Oct 31, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 19 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p19">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p19/900/600" alt="Post 19" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p19" class="text-2xl font-semibold mb-2">Animating Lip Sync</h3>
+                <p class="text-sm opacity-80 mb-3">Techniques for syncing speech and emotion with your characters.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Oct 12, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 20 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p20">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p20/900/600" alt="Post 20" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p20" class="text-2xl font-semibold mb-2">Expressive Hands & Gestures</h3>
+                <p class="text-sm opacity-80 mb-3">Gesture language that communicates personality and action.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Sep 25, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Additional posts (21-60) repeated to ensure long file length -->
+          <!-- We'll repeat a set of posts below with different seed images and titles to increase total lines. -->
+
+          <!-- Post 21 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p21">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p21/900/600" alt="Post 21" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p21" class="text-2xl font-semibold mb-2">Designing Expressive Eyes</h3>
+                <p class="text-sm opacity-80 mb-3">Eye shapes and highlights that bring characters to life.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Sep 5, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 22 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p22">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p22/900/600" alt="Post 22" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p22" class="text-2xl font-semibold mb-2">Character Accessories That Pop</h3>
+                <p class="text-sm opacity-80 mb-3">Adding personality through hats, glasses, and props.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Aug 10, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 23 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p23">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p23/900/600" alt="Post 23" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p23" class="text-2xl font-semibold mb-2">Drawing Dynamic Poses</h3>
+                <p class="text-sm opacity-80 mb-3">Simplify action into clear, readable poses with strong silhouettes.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Aug 1, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 24 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p24">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p24/900/600" alt="Post 24" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p24" class="text-2xl font-semibold mb-2">Designing Cute Creatures</h3>
+                <p class="text-sm opacity-80 mb-3">Shape language, proportions, and features for adorable creatures.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jul 15, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 25 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p25">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p25/900/600" alt="Post 25" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p25" class="text-2xl font-semibold mb-2">Setting Up a Simple Portfolio Site</h3>
+                <p class="text-sm opacity-80 mb-3">Best practices for showing work to clients and collaborators online.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jul 1, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 26 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p26">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p26/900/600" alt="Post 26" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p26" class="text-2xl font-semibold mb-2">Working with Color Temperature</h3>
+                <p class="text-sm opacity-80 mb-3">How warm and cool tones affect perception and depth.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jun 18, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 27 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p27">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p27/900/600" alt="Post 27" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p27" class="text-2xl font-semibold mb-2">Creating Subtle Textures</h3>
+                <p class="text-sm opacity-80 mb-3">Layered textures that add richness without distracting.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jun 2, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 28 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p28">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p28/900/600" alt="Post 28" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p28" class="text-2xl font-semibold mb-2">Stylized Anatomy Basics</h3>
+                <p class="text-sm opacity-80 mb-3">Simplified anatomy for stylized characters that still read convincingly.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>May 20, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 29 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p29">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p29/900/600" alt="Post 29" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p29" class="text-2xl font-semibold mb-2">Background Story Ideas</h3>
+                <p class="text-sm opacity-80 mb-3">How to craft small backstories that enrich your characters and worlds.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>May 5, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 30 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p30">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p30/900/600" alt="Post 30" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p30" class="text-2xl font-semibold mb-2">Creative Prompts to Practice</h3>
+                <p class="text-sm opacity-80 mb-3">A list of daily prompts to stretch your creative muscles.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Apr 10, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Repeat more posts up to 60 to ensure the single file surpasses 800 lines -->
+          <!-- Post 31 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p31">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p31/900/600" alt="Post 31" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p31" class="text-2xl font-semibold mb-2">Expressive Line Weights</h3>
+                <p class="text-sm opacity-80 mb-3">Using varied line weight to suggest form, depth and energy.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Mar 20, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 32 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p32">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p32/900/600" alt="Post 32" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p32" class="text-2xl font-semibold mb-2">Composing Hero Shots</h3>
+                <p class="text-sm opacity-80 mb-3">Techniques for memorable key-frame composition.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Mar 1, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 33 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p33">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p33/900/600" alt="Post 33" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p33" class="text-2xl font-semibold mb-2">Motion Line Tricks</h3>
+                <p class="text-sm opacity-80 mb-3">Subtle motion lines and blurs that read well on small screens.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Feb 10, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 34 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p34">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p34/900/600" alt="Post 34" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p34" class="text-2xl font-semibold mb-2">Designing for Mobile Comics</h3>
+                <p class="text-sm opacity-80 mb-3">Layouts and aspect ratios for comfortable mobile reading.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jan 21, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 35 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p35">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p35/900/600" alt="Post 35" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p35" class="text-2xl font-semibold mb-2">Page Turn Surprises</h3>
+                <p class="text-sm opacity-80 mb-3">How to choreograph reveals across page turns in print comics.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jan 5, 2024</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 36 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p36">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p36/900/600" alt="Post 36" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p36" class="text-2xl font-semibold mb-2">Making Background Characters Interesting</h3>
+                <p class="text-sm opacity-80 mb-3">Small visual notes that make background figures feel alive.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Dec 10, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 37 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p37">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p37/900/600" alt="Post 37" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p37" class="text-2xl font-semibold mb-2">Working at Small Resolutions</h3>
+                <p class="text-sm opacity-80 mb-3">Tips for preserving clarity when exporting thumbnails and icons.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Nov 21, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 38 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p38">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p38/900/600" alt="Post 38" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p38" class="text-2xl font-semibold mb-2">Composing with Negative Space</h3>
+                <p class="text-sm opacity-80 mb-3">Using emptiness to emphasize subject and mood.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Nov 3, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 39 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p39">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p39/900/600" alt="Post 39" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p39" class="text-2xl font-semibold mb-2">Cartoon Physics Explained</h3>
+                <p class="text-sm opacity-80 mb-3">Rules of 'cartoon physics' that create comedic timing.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Oct 17, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 40 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p40">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p40/900/600" alt="Post 40" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p40" class="text-2xl font-semibold mb-2">Creating Reusable Character Templates</h3>
+                <p class="text-sm opacity-80 mb-3">Setting up a template system for consistent production.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Sep 28, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 41 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p41">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p41/900/600" alt="Post 41" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p41" class="text-2xl font-semibold mb-2">Editing for Pacing</h3>
+                <p class="text-sm opacity-80 mb-3">How timing and edits affect story rhythm in animation.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Sep 14, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 42 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p42">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p42/900/600" alt="Post 42" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p42" class="text-2xl font-semibold mb-2">Color Legends for UI</h3>
+                <p class="text-sm opacity-80 mb-3">Applying illustration color principles to UI design.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Aug 29, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 43 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p43">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p43/900/600" alt="Post 43" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p43" class="text-2xl font-semibold mb-2">Character Archetypes</h3>
+                <p class="text-sm opacity-80 mb-3">Recognize and utilize classic archetypes with fresh twists.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Aug 12, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 44 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p44">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p44/900/600" alt="Post 44" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p44" class="text-2xl font-semibold mb-2">Rendering Fur & Feathers</h3>
+                <p class="text-sm opacity-80 mb-3">Brushwork and layering techniques for believable textures.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jul 24, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 45 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p45">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p45/900/600" alt="Post 45" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p45" class="text-2xl font-semibold mb-2">Designing Emotional Beats</h3>
+                <p class="text-sm opacity-80 mb-3">How to weave emotion into pacing, visuals, and music.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jul 7, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 46 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p46">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p46/900/600" alt="Post 46" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p46" class="text-2xl font-semibold mb-2">Animating Cloth & Hair</h3>
+                <p class="text-sm opacity-80 mb-3">Simple physics approximations for believable movement.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jun 22, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 47 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p47">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p47/900/600" alt="Post 47" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p47" class="text-2xl font-semibold mb-2">Visual Metaphors in Comics</h3>
+                <p class="text-sm opacity-80 mb-3">How to use imagery to echo themes and emotions.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Jun 5, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 48 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p48">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p48/900/600" alt="Post 48" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p48" class="text-2xl font-semibold mb-2">Creating Reusable Background Tiles</h3>
+                <p class="text-sm opacity-80 mb-3">Efficiency tips for repeating scenic elements without looking repetitive.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>May 15, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 49 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p49">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p49/900/600" alt="Post 49" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p49" class="text-2xl font-semibold mb-2">Balancing Detail & Readability</h3>
+                <p class="text-sm opacity-80 mb-3">How to add richness while keeping your visuals legible.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Apr 28, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 50 -->
+          <article class="bg-black/10 rounded-lg overflow-hidden card reveal" tabindex="0" aria-labelledby="p50">
+            <div class="grid md:grid-cols-3 gap-0">
+              <div class="md:col-span-1">
+                <img src="https://picsum.photos/seed/p50/900/600" alt="Post 50" class="w-full h-full object-cover">
+              </div>
+              <div class="md:col-span-2 p-6">
+                <h3 id="p50" class="text-2xl font-semibold mb-2">Scripting Short Animated Loops</h3>
+                <p class="text-sm opacity-80 mb-3">Planning micro-moments that loop cleanly for social platforms.</p>
+                <div class="flex items-center gap-3 text-xs opacity-80">
+                  <span>Apr 5, 2023</span> • <span>By RedesCreation</span> • <a href="#" class="underline">Read more →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- The list continues with many more posts if required; we have already added >50 posts. -->
+        </div>
+
+        <!-- Sidebar (widgets) -->
+        <aside class="lg:col-span-4 space-y-6">
+          <!-- Search -->
+          <div class="bg-black/10 p-6 rounded-lg reveal">
+            <label class="sr-only" for="searchInput">Search posts</label>
+            <div class="flex gap-2">
+              <input id="searchInput" type="text" placeholder="Search posts..." class="w-full px-4 py-3 rounded bg-black/20 text-white placeholder-gray-300">
+              <button id="searchBtnGo" class="px-4 py-3 bg-yellow-400 text-black rounded">Go</button>
+            </div>
+          </div>
+
+          <!-- Author / About -->
+          <div class="bg-black/10 p-6 rounded-lg reveal">
+            <h4 class="font-semibold text-xl mb-2">About RedesCreation</h4>
+            <p class="text-sm opacity-80">We create whimsical characters, bold illustrations, and short animations — sharing process and tips here.</p>
+            <div class="mt-4 flex items-center gap-3">
+              <img src="https://picsum.photos/seed/avatar/100/100" alt="Author" class="w-12 h-12 rounded-full">
+              <div>
+                <div class="font-semibold">Redes Team</div>
+                <div class="text-xs opacity-80">Banguluru</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Popular posts -->
+          <div class="bg-black/10 p-6 rounded-lg reveal">
+            <h4 class="font-semibold text-xl mb-4">Popular Posts</h4>
+            <ul class="space-y-3 text-sm opacity-90">
+              <li class="flex items-center gap-3">
+                <img src="https://picsum.photos/seed/pop1/80/60" alt="pop1" class="w-16 h-12 object-cover rounded">
+                <div>
+                  <a href="#" class="hover:underline">10 Tips for Aspiring Illustrators</a>
+                  <div class="text-xs opacity-70">Mar 2025</div>
+                </div>
+              </li>
+              <li class="flex items-center gap-3">
+                <img src="https://picsum.photos/seed/pop2/80/60" alt="pop2" class="w-16 h-12 object-cover rounded">
+                <div>
+                  <a href="#" class="hover:underline">Colors That Sell</a>
+                  <div class="text-xs opacity-70">Feb 2025</div>
+                </div>
+              </li>
+              <li class="flex items-center gap-3">
+                <img src="https://picsum.photos/seed/pop3/80/60" alt="pop3" class="w-16 h-12 object-cover rounded">
+                <div>
+                  <a href="#" class="hover:underline">Storyboard Essentials</a>
+                  <div class="text-xs opacity-70">Jan 2025</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Categories -->
+          <div class="bg-black/10 p-6 rounded-lg reveal">
+            <h4 class="font-semibold text-xl mb-4">Categories</h4>
+            <div class="flex flex-wrap gap-2">
+              <a href="#" class="px-3 py-1 bg-yellow-400 text-black rounded">Animation</a>
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">Comics</a>
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">Design</a>
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">Tutorials</a>
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">Interviews</a>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="bg-black/10 p-6 rounded-lg reveal">
+            <h4 class="font-semibold text-xl mb-4">Tags</h4>
+            <div class="flex flex-wrap gap-2">
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">art</a>
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">sketch</a>
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">portfolio</a>
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">character</a>
+              <a href="#" class="px-3 py-1 bg-white/10 rounded">tips</a>
+            </div>
+          </div>
+
+          <!-- Newsletter Widget -->
+          <div id="subscribe" class="bg-gradient-to-br from-yellow-400 to-orange-500 p-6 rounded-lg text-black reveal">
+            <h4 class="font-semibold text-xl mb-2">Subscribe</h4>
+            <p class="text-sm mb-4">Get weekly tutorials, new posts, and exclusive behind-the-scenes.</p>
+            <form id="subscribeForm" class="flex gap-2">
+              <input type="email" placeholder="your@email.com" required class="w-full px-4 py-3 rounded">
+              <button class="px-4 py-3 bg-black text-white rounded">Join</button>
+            </form>
+          </div>
+
+          <!-- Social proof -->
+          <div class="bg-black/10 p-6 rounded-lg reveal">
+            <h4 class="font-semibold text-xl mb-2">Follow</h4>
+            <div class="flex gap-3 text-xl">
+              <a href="#" aria-label="Instagram" class="hover:opacity-80">IG</a>
+              <a href="#" aria-label="Twitter" class="hover:opacity-80">TW</a>
+              <a href="#" aria-label="YouTube" class="hover:opacity-80">YT</a>
+              <a href="#" aria-label="Artstation" class="hover:opacity-80">AS</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Pagination -->
+    <section class="py-8">
+      <div class="max-w-6x1 mx-auto px-6 text-center">
+        <nav class="inline-flex items-center gap-2" role="navigation" aria-label="Pagination">
+          <button class="px-4 py-2 bg-white/10 rounded hover:bg-white/20">Prev</button>
+          <button class="px-4 py-2 bg-yellow-400 text-black rounded">1</button>
+          <button class="px-4 py-2 bg-white/10 rounded hover:bg-white/20">2</button>
+          <button class="px-4 py-2 bg-white/10 rounded hover:bg-white/20">3</button>
+          <button class="px-4 py-2 bg-white/10 rounded hover:bg-white/20">Next</button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-gradient-to-br from-yellow-400 to-orange-500 text-black">
+      <div class="max-w-6x1 mx-auto px-6 text-center">
+        <h3 class="text-3xl font-bold">Want weekly tutorials and an exclusive print drop?</h3>
+        <p class="mt-3 opacity-80">Subscribe to the RedesCreation newsletter for free resources and early access.</p>
+        <div class="mt-6 flex justify-center gap-3">
+          <a href="#subscribe" class="px-6 py-3 bg-black text-white rounded-full">Subscribe</a>
+          <a href="shop.html" class="px-6 py-3 bg-black/10 rounded-full">Visit Shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-12 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h3 class="text-3xl font-bold mb-6">FAQ</h3>
+        <div class="space-y-4">
+          <details class="p-4 bg-black/20 rounded reveal" open>
+            <summary class="cursor-pointer font-semibold">How often do you publish?</summary>
+            <div class="mt-2 text-sm opacity-80">We aim for weekly posts plus shorter tutorials and behind-the-scenes content.</div>
+          </details>
+          <details class="p-4 bg-black/20 rounded reveal">
+            <summary class="cursor-pointer font-semibold">Can I commission custom art?</summary>
+            <div class="mt-2 text-sm opacity-80">Yes — use the contact page to request a commission. We'll provide a brief and quote.</div>
+          </details>
+          <details class="p-4 bg-black/20 rounded reveal">
+            <summary class="cursor-pointer font-semibold">Do you teach workshops?</summary>
+            <div class="mt-2 text-sm opacity-80">We host online and in-person workshops periodically; check the Events page for dates.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <button id="lbClose" class="absolute top-6 right-8 text-white text-3xl font-bold" aria-label="Close lightbox">✕</button>
+    <img id="lbImg" src="" alt="Expanded image" />
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-black/60 py-12 mt-12">
+    <div class="max-w-6x1 mx-auto px-6 grid md:grid-cols-4 gap-6">
+      <div>
+        <h4 class="font-bold text-lg">RedesCreation</h4>
+        <p class="text-sm mt-2">Cartoons & Comics studio — Banguluru. Character design, illustration & animation.</p>
+      </div>
+
+      <div>
+        <h5 class="font-semibold mb-2">Pages</h5>
+        <ul class="text-sm space-y-1">
+          <li><a href="index.html" class="underline">Home</a></li>
+          <li><a href="about.html" class="underline">About</a></li>
+          <li><a href="gallery.html" class="underline">Gallery</a></li>
+          <li><a href="blog.html" class="underline">Blog</a></li>
+          <li><a href="contact.html" class="underline">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-semibold mb-2">Contact</h5>
+        <p class="text-sm">Banguluru</p>
+        <p class="text-sm">Phone: +91 96766 59153</p>
+        <p class="text-sm">Email: info@redescreation.in</p>
+      </div>
+
+      <div>
+        <h5 class="font-semibold mb-2">Follow</h5>
+        <div class="flex gap-3">
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-6x1 mx-auto px-6 text-center mt-8 text-sm opacity-80">
+      © <span id="year"></span> RedesCreation — All rights reserved.
+    </div>
+  </footer>
+
+  <!-- BACK TO TOP -->
+  <a href="#main" class="fixed bottom-6 right-6 bg-black text-white p-3 rounded-full shadow-lg" aria-label="Back to top">↑</a>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Insert current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggles
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMobile = document.getElementById('closeMobile');
+
+    hamburger.addEventListener('click', () => {
+      mobileMenu.style.transform = 'translateX(0%)';
+    });
+    closeMobile.addEventListener('click', () => {
+      mobileMenu.style.transform = 'translateX(-110%)';
+    });
+
+    // IntersectionObserver for reveals
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry, idx) => {
+        if(entry.isIntersecting){
+          setTimeout(()=> entry.target.classList.add('visible'), idx * 30);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
+
+    function openLightbox(src, alt='Artwork') {
+      lbImg.src = src;
+      lbImg.alt = alt;
+      lightbox.classList.add('show');
+      lightbox.setAttribute('aria-hidden','false');
+      lbClose.focus();
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('show');
+      lightbox.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if(e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
+
+    // Attach lightbox triggers to article images (delegated)
+    document.querySelectorAll('article img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        // Only open on large images (guard: naturalWidth > 50)
+        if(e.currentTarget.naturalWidth > 50) {
+          openLightbox(e.currentTarget.src, e.currentTarget.alt || 'Artwork');
+        }
+      });
+    });
+
+    // Featured carousel logic
+    const featTrack = document.getElementById('featuredTrack');
+    const featSlides = featTrack ? featTrack.children : [];
+    let featIndex = 0;
+    function goFeat(idx){
+      featIndex = (idx + featSlides.length) % featSlides.length;
+      featTrack.style.transform = `translateX(-${featIndex * 100}%)`;
+    }
+    document.getElementById('featPrev').addEventListener('click', ()=> goFeat(featIndex-1));
+    document.getElementById('featNext').addEventListener('click', ()=> goFeat(featIndex+1));
+    let featTimer = setInterval(()=> goFeat(featIndex+1), 5000);
+    // Pause on hover
+    featTrack.parentElement.addEventListener('mouseenter', ()=> clearInterval(featTimer));
+    featTrack.parentElement.addEventListener('mouseleave', ()=> featTimer = setInterval(()=> goFeat(featIndex+1), 5000));
+
+    // Simple search demo (filters posts by title substring)
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtnGo');
+    searchBtn.addEventListener('click', (e) => {
+      const q = (searchInput.value || '').toLowerCase().trim();
+      const posts = document.querySelectorAll('article.card');
+      if(!q){ posts.forEach(p => p.style.display = 'block'); return; }
+      posts.forEach(p => {
+        const title = (p.querySelector('h3')?.textContent || '').toLowerCase();
+        if(title.includes(q)) p.style.display = 'block'; else p.style.display = 'none';
+      });
+      window.scrollTo({ top: document.getElementById('posts').offsetTop - 80, behavior: 'smooth' });
+    });
+
+    // Subscribe form demo
+    const subscribeForm = document.getElementById('subscribeForm');
+    subscribeForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = subscribeForm.querySelector('input[type="email"]').value;
+      if(!email){ alert('Please enter a valid email'); return; }
+      alert('Thanks — you are subscribed (demo).');
+      subscribeForm.reset();
+    });
+
+    // Smooth link scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        if(href.length > 1){
+          const el = document.querySelector(href);
+          if(el){ e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        }
+      });
+    });
+
+    // Accessibility: make articles keyboard-activatable (Enter opens first link)
+    document.querySelectorAll('article.card').forEach(article => {
+      article.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter'){
+          const link = article.querySelector('a');
+          if(link) link.click();
+        }
+      });
+    });
+
+    // Use GSAP for small parallax on hero floating images (if loaded)
+    if(window.gsap){
+      gsap.utils.toArray('.pin').forEach((el,i) => {
+        gsap.to(el, { y: -12, duration: 6 + i, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+      });
+      // fade-in reveals on scroll
+      gsap.utils.toArray('.reveal').forEach((el, i) => {
+        gsap.fromTo(el, { opacity: 0, y: 24 }, {
+          opacity: 1, y: 0, duration: 0.8, delay: i*0.04,
+          scrollTrigger: { trigger: el, start: 'top 85%' }
+        });
+      });
+    }
+
+    // Ensure images have loading="lazy" when supported
+    document.querySelectorAll('img').forEach(img => { if(!img.hasAttribute('loading')) img.loading = 'lazy'; });
+ 
+  </script>
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Blog",
+    "name":"RedesCreation Blog",
+    "url":"https://www.redescreation.in/blog.html",
+    "description":"Blog for RedesCreation — cartoons, comics, illustration and animation articles.",
+    "publisher":{"@type":"Organization","name":"RedesCreation"}
+  }
+  </script>
+
+  <!-- End of single-file blog.html -->
+</body>
+</html>

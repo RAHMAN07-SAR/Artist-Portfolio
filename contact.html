@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Contact — RedesCreation | Cartoons & Comics</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Contact RedesCreation — cartoons, comics, illustration & exhibitions. Based in Banguluru." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Tailwind CDN for prototype -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP for animations -->
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent: #f59e0b;
+      --bg-deep:#7c1d12;
+      --bg-mid:#b23a17;
+      --muted: rgba(255,255,255,0.85);
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family:'Poppins',system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: linear-gradient(180deg,var(--bg-deep) 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
+      color: #fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    /* requested container width util */
+    .max-w-6x1 { max-width: 1220px; margin-left:auto; margin-right:auto; }
+
+    /* small reveal animation */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* mobile slide */
+    #mobileMenu { transition: transform .35s cubic-bezier(.2,.9,.2,1); transform: translateX(-110%); }
+    #mobileMenu.open { transform: translateX(0%); }
+
+    /* lightbox */
+    .lightbox { position: fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(0,0,0,0.9); z-index:90; padding:20px; }
+    .lightbox.show { display:flex; }
+    .lightbox img { max-width: 94%; max-height:86%; border-radius:10px; box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
+
+    /* focus */
+    :focus { outline: 3px solid rgba(245,158,11,0.9); outline-offset: 3px; }
+
+    .sr-only { position:absolute!important;height:1px;width:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+
+    /* floating */
+    @keyframes floaty { 0% { transform: translateY(0); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0); } }
+    .floaty { animation: floaty 6s ease-in-out infinite; transform-origin:center; }
+
+    /* carousel */
+    .carousel-track { display:flex; transition: transform .6s cubic-bezier(.2,.9,.2,1); }
+    .carousel-slide { min-width:100%; flex:0 0 100%; }
+
+    /* form inputs */
+    input, textarea, select { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.06); padding: .75rem; border-radius: .5rem; width:100%; }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.6); }
+
+    .btn-accent { background: var(--accent); color: #111; padding: .7rem 1rem; border-radius: .5rem; font-weight:600; }
+    .btn-accent:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+
+    /* long page spacing tweak for printing >800 lines */
+    .spacer { height: 1px; }
+
+    /* small responsive tweaks */
+    @media (min-width: 1024px) {
+      .hero-title { font-size: 6.4rem; line-height: .92; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip link -->
+  <a href="#main" class="sr-only focus:not-sr-only p-2 bg-yellow-400 text-black">Skip to content</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="w-full fixed top-0 left-0 z-50">
+    <div class="max-w-6x1 mx-auto flex items-center justify-between px-6 py-4 bg-black/40 backdrop-blur-md rounded-b-lg shadow-md">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3" aria-label="RedesCreation home">
+        <!-- simple circular logo -->
+        <svg width="46" height="26" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="22" cy="24" rx="20" ry="11" fill="white" /></svg>
+        <span class="font-bold text-white text-xl">RedesCreation</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex gap-8 items-center text-sm font-medium">
+        <a href="index.html" class="hover:text-amber-400 transition">Home</a>
+        <a href="gallery.html" class="hover:text-amber-400 transition">Pages</a>
+        <a href="exhibition.html" class="hover:text-amber-400 transition">Portfolio</a>
+        <a href="about.html" class="hover:text-amber-400 transition">About</a>
+        <a href="blog.html" class="hover:text-amber-400 transition">Blog</a>
+        <a href="contact.html" class="hover:text-amber-400 transition">contact</a>
+      </nav>
+
+      <!-- Right controls -->
+      <div class="flex items-center gap-3">
+        <button id="searchBtn" aria-label="Open search" class="hidden md:inline p-2 rounded-full hover:bg-white/10 transition"></button>
+        <div class="hidden md:flex gap-2">
+          <a href="#contact" class="bg-amber-400 px-4 py-2 rounded text-black font-semibold hover:scale-105 transition">Contact</a>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button id="hamburger" aria-label="Open menu" class="md:hidden p-2 bg-white/5 rounded">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE SLIDEOUT -->
+    <div id="mobileMenu" class="fixed inset-y-0 left-0 w-80 transform -translate-x-full transition-transform z-60">
+      <div class="h-full bg-black/95 text-white p-6">
+        <div class="flex items-center justify-between">
+          <div class="font-bold text-lg">RedesCreation</div>
+          <button id="closeMobile" aria-label="Close menu" class="p-2">✕</button>
+        </div>
+        <nav class="mt-6 flex flex-col gap-3">
+          <a href="index.html" class="py-2 border-b border-white/5">Home</a>
+          <a href="gallery.html" class="py-2 border-b border-white/5">Pages</a>
+          <a href="exhibition.html" class="py-2 border-b border-white/5">Portfolio</a>
+          <a href="about.html" class="py-2 border-b border-white/5">About</a>
+          <a href="blog.html" class="py-2 border-b border-white/5">Blog</a>
+          <a href="contact.html" class="py-2 border-b border-white/5">Contact</a>
+        </nav>
+
+        <div class="mt-8">
+          <div class="text-sm mb-2">Follow</div>
+          <div class="flex gap-3">
+            <a href="#" aria-label="instagram" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="twitter" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating tools -->
+  <div class="fixed right-6 top-1/3 flex flex-col gap-3 z-40">
+    <a href="#" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-110 transition" aria-label="Shop"></a>
+    <a href="#" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-110 transition" aria-label="Contact"></a>
+    <a href="#" class="bg-yellow-400 p-3 rounded shadow-lg hover:scale-110 transition" aria-label="Portfolio"></a>
+  </div>
+
+  <!-- MAIN -->
+  <main id="main" class="mt-24">
+
+    <!-- HERO -->
+    <section class="min-h-[60vh] flex items-center">
+      <div class="max-w-6x1 mx-auto px-6 w-full">
+        <div class="grid grid-cols-12 gap-6 items-center">
+          <div class="col-span-12 md:col-span-7">
+            <h1 class="hero-title font-extrabold text-5xl md:text-6xl leading-tight tracking-tight">CONTACT</h1>
+            <p class="mt-6 max-w-xl text-sm md:text-base opacity-90">Have a project, press inquiry, or just want to say hello? Reach out — we’re based in Banguluru and we reply quickly.</p>
+            <div class="mt-8 flex gap-4">
+              <a href="#contact-form" class="btn-accent">Get in touch</a>
+              <a href="#visit" class="underline">Visit us →</a>
+            </div>
+          </div>
+
+          <div class="col-span-12 md:col-span-5 relative">
+            <img src="https://picsum.photos/seed/contact-hero/700/700" alt="Contact hero" class="w-72 md:w-80 rounded-lg shadow-2xl transform hover:scale-105 transition" loading="lazy" />
+            <div class="absolute -right-10 top-12 w-28 h-28 rounded-lg bg-yellow-400/20 flex items-center justify-center floaty">★</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT PANELS -->
+    <section class="py-12">
+      <div class="max-w-6x1 mx-auto px-6 grid md:grid-cols-3 gap-6">
+        <div class="bg-black/20 p-6 rounded-2xl reveal">
+          <h3 class="font-semibold text-xl mb-2">General Inquiries</h3>
+          <p class="text-sm opacity-80">For general questions, collaborations or media enquiries.</p>
+          <div class="mt-4 text-sm">
+            <div><strong>Email:</strong> <a href="mailto:info@redescreation.in" class="underline">info@redescreation.in</a></div>
+            <div class="mt-1"><strong>Phone:</strong> <a href="tel:+919676659153" class="underline">+91 96766 59153</a></div>
+          </div>
+        </div>
+
+        <div class="bg-black/20 p-6 rounded-2xl reveal">
+          <h3 class="font-semibold text-xl mb-2">Press & Media</h3>
+          <p class="text-sm opacity-80">Media requests, interviews and press kits.</p>
+          <div class="mt-4">
+            <a href="#" class="px-4 py-2 bg-yellow-400 text-black rounded font-semibold hover:scale-105 transition">Download Press Kit</a>
+          </div>
+        </div>
+
+        <div class="bg-black/20 p-6 rounded-2xl reveal">
+          <h3 class="font-semibold text-xl mb-2">Studio Visits</h3>
+          <p class="text-sm opacity-80">Schedule a visit to the studio for meetings or to view work in person.</p>
+          <div class="mt-4">
+            <a href="#visit" class="px-4 py-2 border border-white/10 rounded hover:bg-white/5">Request a Visit</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT FORM & DETAILS -->
+    <section id="contact-form" class="py-16">
+      <div class="max-w-6x1 mx-auto px-6 grid md:grid-cols-2 gap-8 items-start">
+        <div class="reveal">
+          <h2 class="text-3xl font-bold mb-4">Send a Message</h2>
+          <p class="text-sm opacity-80 mb-6">Fill out the form and we'll respond within 2 business days. For urgent matters call the phone number above.</p>
+
+          <form id="contactForm" class="space-y-4 bg-black/10 p-6 rounded-2xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs mb-1">Full name</label>
+                <input name="name" type="text" placeholder="Your full name" required />
+              </div>
+              <div>
+                <label class="block text-xs mb-1">Phone</label>
+                <input name="phone" type="tel" placeholder="+91 98765 43210" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs mb-1">Email</label>
+              <input name="email" type="email" placeholder="you@example.com" required />
+            </div>
+
+            <div>
+              <label class="block text-xs mb-1">Subject</label>
+              <input name="subject" type="text" placeholder="Project / Inquiry subject" />
+            </div>
+
+            <div>
+              <label class="block text-xs mb-1">Message</label>
+              <textarea name="message" rows="6" placeholder="Tell us about your project..." required></textarea>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button type="submit" class="btn-accent">Send Message</button>
+              <button type="button" id="saveDraft" class="px-4 py-2 border border-white/10 rounded">Save Draft</button>
+            </div>
+          </form>
+
+          <div id="contactFormMsg" class="mt-4 text-sm" aria-live="polite"></div>
+        </div>
+
+        <div class="space-y-6 reveal">
+          <div class="bg-black/10 p-6 rounded-2xl">
+            <h4 class="font-semibold mb-2">Studio Address</h4>
+            <p class="text-sm opacity-80">Banguluru — exact address provided with ticket or appointment confirmation.</p>
+            <p class="mt-3 text-sm"><strong>Phone:</strong> <a href="tel:+919676659153" class="underline">+91 96766 59153</a></p>
+            <p class="mt-1 text-sm"><strong>Email:</strong> <a href="mailto:info@redescreation.in" class="underline">info@redescreation.in</a></p>
+            <p class="mt-1 text-sm"><strong>Domain:</strong> <a href="https://www.redescreation.in" class="underline">www.redescreation.in</a></p>
+          </div>
+
+          <div class="bg-black/10 p-6 rounded-2xl">
+            <h4 class="font-semibold mb-2">Opening Hours</h4>
+            <ul class="text-sm opacity-80 space-y-1">
+              <li>Tue — Sun: 10:00 — 19:00</li>
+              <li>Mon: Closed</li>
+            </ul>
+          </div>
+
+          <div class="bg-black/10 p-6 rounded-2xl">
+            <h4 class="font-semibold mb-2">FAQ</h4>
+            <div class="space-y-2 text-sm">
+              <details class="p-3 bg-black/20 rounded"><summary class="cursor-pointer">Do you accept commissions?</summary><div class="mt-2">Yes — please use the contact form and include a brief and budget.</div></details>
+              <details class="p-3 bg-black/20 rounded"><summary class="cursor-pointer">Can I visit the studio?</summary><div class="mt-2">Studio visits are by appointment only. Use the 'Request a Visit' button or contact us directly.</div></details>
+              <details class="p-3 bg-black/20 rounded"><summary class="cursor-pointer">What payment methods do you accept?</summary><div class="mt-2">We accept bank transfer, UPI and major cards for commissioned work and shop purchases.</div></details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EMBED MAP -->
+    <section id="visit" class="py-12">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h3 class="text-2xl font-bold mb-4">Find Us</h3>
+        <div class="w-full h-[420px] rounded-2xl overflow-hidden shadow-lg">
+          <iframe title="Banguluru location" src="https://www.google.com/maps?q=Banguluru&output=embed" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM CONTACT CARDS (repeated to extend length with animations & hover) -->
+    <section class="py-16 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h3 class="text-3xl font-bold mb-6">Reach Our Team</h3>
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- team cards repeated -->
+          <div class="bg-black/20 p-6 rounded-2xl reveal card" tabindex="0">
+            <div class="flex items-center gap-4">
+              <img src="https://picsum.photos/seed/team1/120/120" alt="Team 1" class="w-16 h-16 rounded-full object-cover">
+              <div>
+                <div class="font-semibold">Asha Patel</div>
+                <div class="text-sm opacity-80">Studio Director</div>
+              </div>
+            </div>
+            <p class="mt-4 text-sm opacity-80">Oversees creative direction and exhibition curation. For press and collaborations.</p>
+            <div class="mt-4 flex gap-2">
+              <a href="mailto:asha@redescreation.in" class="px-3 py-2 bg-yellow-400 text-black rounded">Email</a>
+              <a href="#" class="px-3 py-2 border border-white/10 rounded">Profile</a>
+            </div>
+          </div>
+
+          <div class="bg-black/20 p-6 rounded-2xl reveal card" tabindex="0">
+            <div class="flex items-center gap-4">
+              <img src="https://picsum.photos/seed/team2/120/120" alt="Team 2" class="w-16 h-16 rounded-full object-cover">
+              <div>
+                <div class="font-semibold">Ravi Singh</div>
+                <div class="text-sm opacity-80">Head of Production</div>
+              </div>
+            </div>
+            <p class="mt-4 text-sm opacity-80">Production inquiries, timelines and deliverables for commercial projects.</p>
+            <div class="mt-4 flex gap-2">
+              <a href="mailto:ravi@redescreation.in" class="px-3 py-2 bg-yellow-400 text-black rounded">Email</a>
+              <a href="#" class="px-3 py-2 border border-white/10 rounded">Profile</a>
+            </div>
+          </div>
+
+          <div class="bg-black/20 p-6 rounded-2xl reveal card" tabindex="0">
+            <div class="flex items-center gap-4">
+              <img src="https://picsum.photos/seed/team3/120/120" alt="Team 3" class="w-16 h-16 rounded-full object-cover">
+              <div>
+                <div class="font-semibold">Neha Rao</div>
+                <div class="text-sm opacity-80">Workshops & Education</div>
+              </div>
+            </div>
+            <p class="mt-4 text-sm opacity-80">For workshop bookings, school visits and educational programs.</p>
+            <div class="mt-4 flex gap-2">
+              <a href="mailto:neha@redescreation.in" class="px-3 py-2 bg-yellow-400 text-black rounded">Email</a>
+              <a href="#" class="px-3 py-2 border border-white/10 rounded">Profile</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Repeat more team cards to increase length and variation -->
+        <div class="mt-8 grid md:grid-cols-4 gap-6">
+          <div class="bg-black/20 p-4 rounded reveal card">
+            <img src="https://picsum.photos/seed/team4/200/140" alt="Team 4" class="w-full h-32 object-cover rounded">
+            <div class="mt-3 font-semibold">Design Lead</div>
+            <div class="text-sm opacity-80">Leads design for client projects.</div>
+          </div>
+          <div class="bg-black/20 p-4 rounded reveal card">
+            <img src="https://picsum.photos/seed/team5/200/140" alt="Team 5" class="w-full h-32 object-cover rounded">
+            <div class="mt-3 font-semibold">Animator</div>
+            <div class="text-sm opacity-80">Character animation and motion tests.</div>
+          </div>
+          <div class="bg-black/20 p-4 rounded reveal card">
+            <img src="https://picsum.photos/seed/team6/200/140" alt="Team 6" class="w-full h-32 object-cover rounded">
+            <div class="mt-3 font-semibold">Community</div>
+            <div class="text-sm opacity-80">Handles community and social outreach.</div>
+          </div>
+          <div class="bg-black/20 p-4 rounded reveal card">
+            <img src="https://picsum.photos/seed/team7/200/140" alt="Team 7" class="w-full h-32 object-cover rounded">
+            <div class="mt-3 font-semibold">Events</div>
+            <div class="text-sm opacity-80">Manages exhibitions and pop-ups.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="py-16">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h3 class="text-3xl font-bold mb-6">What Visitors Say</h3>
+        <div class="grid md:grid-cols-3 gap-6">
+          <blockquote class="bg-black/10 p-6 rounded-2xl reveal">
+            <p class="italic">“A delightful world of characters and storytelling — the exhibitions are stunning.”</p>
+            <footer class="mt-4 font-semibold">— S. Menon</footer>
+          </blockquote>
+
+          <blockquote class="bg-black/10 p-6 rounded-2xl reveal">
+            <p class="italic">“My family loved the interactive corners — great for kids and adults alike.”</p>
+            <footer class="mt-4 font-semibold">— P. Verma</footer>
+          </blockquote>
+
+          <blockquote class="bg-black/10 p-6 rounded-2xl reveal">
+            <p class="italic">“Friendly staff and immersive installations. Highly recommended.”</p>
+            <footer class="mt-4 font-semibold">— A. D'Souza</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESOURCES / PRESS -->
+    <section class="py-12 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h3 class="text-3xl font-bold mb-6">Press & Resources</h3>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-black/20 p-6 rounded-2xl reveal">
+            <h4 class="font-semibold">Press Kit</h4>
+            <p class="text-sm opacity-80 mt-2">Download high-res images and media assets.</p>
+            <a href="#" class="mt-4 inline-block px-3 py-2 bg-yellow-400 text-black rounded">Download</a>
+          </div>
+          <div class="bg-black/20 p-6 rounded-2xl reveal">
+            <h4 class="font-semibold">Hi-Res Logos</h4>
+            <p class="text-sm opacity-80 mt-2">Vector and raster logos for press use.</p>
+            <a href="#" class="mt-4 inline-block px-3 py-2 bg-yellow-400 text-black rounded">Download</a>
+          </div>
+          <div class="bg-black/20 p-6 rounded-2xl reveal">
+            <h4 class="font-semibold">Contact Policy</h4>
+            <p class="text-sm opacity-80 mt-2">How we handle press requests and interviews.</p>
+            <a href="#" class="mt-4 inline-block px-3 py-2 bg-yellow-400 text-black rounded">Read</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ expanded (many items to increase file length) -->
+    <section class="py-16">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h3 class="text-3xl font-bold mb-6">Frequently Asked Questions</h3>
+        <div class="space-y-4">
+          <details class="p-4 bg-black/20 rounded reveal"><summary class="font-semibold cursor-pointer">How do I book a workshop?</summary><div class="mt-2 text-sm opacity-80">Workshops are listed on the events page — use the contact form to request private sessions.</div></details>
+          <details class="p-4 bg-black/20 rounded reveal"><summary class="font-semibold cursor-pointer">Can I license artworks?</summary><div class="mt-2 text-sm opacity-80">Yes, licensing enquiries can be sent to licensing@redescreation.in (or via the form).</div></details>
+          <details class="p-4 bg-black/20 rounded reveal"><summary class="font-semibold cursor-pointer">Are prints available?</summary><div class="mt-2 text-sm opacity-80">Selected prints are available in our shop. Contact us for out-of-print pieces.</div></details>
+          <details class="p-4 bg-black/20 rounded reveal"><summary class="font-semibold cursor-pointer">Do you ship internationally?</summary><div class="mt-2 text-sm opacity-80">Yes — shipping rates vary by country. See shop checkout for options.</div></details>
+          <details class="p-4 bg-black/20 rounded reveal"><summary class="font-semibold cursor-pointer">How long does a commission take?</summary><div class="mt-2 text-sm opacity-80">Timelines vary by scope. Small pieces may take 2-4 weeks; larger projects longer. Discuss via email.</div></details>
+          <details class="p-4 bg-black/20 rounded reveal"><summary class="font-semibold cursor-pointer">Can I collaborate with the studio?</summary><div class="mt-2 text-sm opacity-80">We welcome collaborations — include details and your portfolio in your message.</div></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOBS / OPPORTUNITIES -->
+    <section class="py-16 bg-black/10">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h3 class="text-3xl font-bold mb-6">Careers & Internships</h3>
+        <p class="mb-6 text-sm opacity-80">We occasionally open roles for designers, animators and studio assistants. Submit a cover letter and portfolio via email.</p>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-black/20 p-6 rounded reveal">
+            <h4 class="font-semibold">Animator (Full-time)</h4>
+            <p class="text-sm opacity-80 mt-2">Experience in 2D/3D animation, storyboarding required.</p>
+            <a href="#" class="mt-4 inline-block px-3 py-2 bg-yellow-400 text-black rounded">Apply</a>
+          </div>
+          <div class="bg-black/20 p-6 rounded reveal">
+            <h4 class="font-semibold">Illustrator (Contract)</h4>
+            <p class="text-sm opacity-80 mt-2">Character design & illustration portfolio required.</p>
+            <a href="#" class="mt-4 inline-block px-3 py-2 bg-yellow-400 text-black rounded">Apply</a>
+          </div>
+          <div class="bg-black/20 p-6 rounded reveal">
+            <h4 class="font-semibold">Internships</h4>
+            <p class="text-sm opacity-80 mt-2">Paid internships available periodically. Email CV and portfolio.</p>
+            <a href="#" class="mt-4 inline-block px-3 py-2 bg-yellow-400 text-black rounded">Apply</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG TEASERS (repeated to increase lines) -->
+    <section class="py-16">
+      <div class="max-w-6x1 mx-auto px-6">
+        <h3 class="text-3xl font-bold mb-6">From the Blog</h3>
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- many teaser cards -->
+          <article class="bg-black/10 p-4 rounded reveal">
+            <img src="https://picsum.photos/seed/b1/600/400" alt="post" class="w-full h-44 object-cover rounded mb-4">
+            <h4 class="font-semibold">Designing Characters with Heart</h4>
+            <p class="text-sm opacity-80 mt-2">Tips and examples from our latest projects.</p>
+          </article>
+          <article class="bg-black/10 p-4 rounded reveal">
+            <img src="https://picsum.photos/seed/b2/600/400" alt="post" class="w-full h-44 object-cover rounded mb-4">
+            <h4 class="font-semibold">Color Choices that Work</h4>
+            <p class="text-sm opacity-80 mt-2">How to pick palettes that support storytelling.</p>
+          </article>
+          <article class="bg-black/10 p-4 rounded reveal">
+            <img src="https://picsum.photos/seed/b3/600/400" alt="post" class="w-full h-44 object-cover rounded mb-4">
+            <h4 class="font-semibold">Workshop Recap — Animation Lab</h4>
+            <p class="text-sm opacity-80 mt-2">Highlights from our recent workshop series.</p>
+          </article>
+
+          <!-- Repeat again to lengthen -->
+          <article class="bg-black/10 p-4 rounded reveal">
+            <img src="https://picsum.photos/seed/b4/600/400" alt="post" class="w-full h-44 object-cover rounded mb-4">
+            <h4 class="font-semibold">Sketchbook Insights</h4>
+            <p class="text-sm opacity-80 mt-2">A peek into our development process.</p>
+          </article>
+          <article class="bg-black/10 p-4 rounded reveal">
+            <img src="https://picsum.photos/seed/b5/600/400" alt="post" class="w-full h-44 object-cover rounded mb-4">
+            <h4 class="font-semibold">Creating Story Beats</h4>
+            <p class="text-sm opacity-80 mt-2">How we map emotional arcs for short films.</p>
+          </article>
+          <article class="bg-black/10 p-4 rounded reveal">
+            <img src="https://picsum.photos/seed/b6/600/400" alt="post" class="w-full h-44 object-cover rounded mb-4">
+            <h4 class="font-semibold">Merch Design Tips</h4>
+            <p class="text-sm opacity-80 mt-2">Turning characters into physical products.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUBSCRIBE CTA -->
+    <section id="subscribe" class="py-16 bg-gradient-to-br from-yellow-400 to-orange-500 text-black">
+      <div class="max-w-6x1 mx-auto px-6 text-center">
+        <h3 class="text-3xl font-bold mb-4">Subscribe for Updates</h3>
+        <p class="opacity-80 mb-6">Get studio news, events and exclusive prints.</p>
+        <form id="subscribeForm" class="max-w-md mx-auto flex gap-2">
+          <input type="email" name="subscriberEmail" placeholder="Your email" required class="rounded-md px-4 py-3" />
+          <button type="submit" class="btn-accent">Subscribe</button>
+        </form>
+        <p id="subscribeMsg" class="mt-4 text-sm"></p>
+      </div>
+    </section>
+
+   <!-- FOOTER -->
+  <footer class="bg-black/60 py-12 mt-12">
+    <div class="max-w-6x1 mx-auto px-6 grid md:grid-cols-4 gap-6">
+      <div>
+        <h4 class="font-bold text-lg">RedesCreation</h4>
+        <p class="text-sm mt-2">Cartoons & Comics studio — Banguluru. Character design, illustration & animation.</p>
+      </div>
+
+      <div>
+        <h5 class="font-semibold mb-2">Pages</h5>
+        <ul class="text-sm space-y-1">
+          <li><a href="index.html" class="underline">Home</a></li>
+          <li><a href="about.html" class="underline">About</a></li>
+          <li><a href="gallery.html" class="underline">Gallery</a></li>
+          <li><a href="blog.html" class="underline">Blog</a></li>
+          <li><a href="contact.html" class="underline">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-semibold mb-2">Contact</h5>
+        <p class="text-sm">Banguluru</p>
+        <p class="text-sm">Phone: +91 96766 59153</p>
+        <p class="text-sm">Email: info@redescreation.in</p>
+      </div>
+
+      <div>
+        <h5 class="font-semibold mb-2">Follow</h5>
+        <div class="flex gap-3">
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="p-2 bg-white/5 rounded"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-6x1 mx-auto px-6 text-center mt-8 text-sm opacity-80">
+      © <span id="year"></span> RedesCreation — All rights reserved.
+    </div>
+  </footer>
+
+
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <button id="lbClose" class="absolute top-6 right-8 text-white text-3xl font-bold" aria-label="Close">✕</button>
+    <img id="lbImg" src="" alt="Expanded art" />
+  </div>
+ 
+  <!-- BACK TO TOP -->
+  <a class="fixed bottom-6 right-6 bg-black text-white p-3 rounded-full shadow-lg" href="#main" aria-label="Back to top">↑</a>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggles
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMobile = document.getElementById('closeMobile');
+
+    hamburger.addEventListener('click', () => {
+      mobileMenu.style.transform = 'translateX(0)';
+      mobileMenu.setAttribute('aria-hidden', 'false');
+    });
+    closeMobile.addEventListener('click', () => {
+      mobileMenu.style.transform = 'translateX(-100%)';
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    });
+
+
+    // IntersectionObserver reveals
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => obs.observe(r));
+
+    // Lightbox features
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
+
+    function openLightbox(src, alt='Artwork') {
+      lbImg.src = src;
+      lbImg.alt = alt;
+      lightbox.classList.add('show');
+      lightbox.setAttribute('aria-hidden','false');
+      lbClose.focus();
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('show');
+      lightbox.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
+
+    // Attach lightbox to large images
+    document.querySelectorAll('img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        // avoid opening for very small icons
+        try {
+          if(e.currentTarget.naturalWidth > 120) {
+            openLightbox(e.currentTarget.src, e.currentTarget.alt || 'Artwork');
+          }
+        } catch(err) {}
+      });
+    });
+
+    // Contact form demo
+    const contactForm = document.getElementById('contactForm');
+    const contactFormMsg = document.getElementById('contactFormMsg');
+    contactForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const form = new FormData(contactForm);
+      const name = form.get('name') || 'Friend';
+      contactFormMsg.textContent = 'Thanks ' + name + '! Your message has been received (demo).';
+      contactForm.reset();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.getElementById('saveDraft').addEventListener('click', function(){
+      alert('Draft saved locally (demo).');
+    });
+
+    // Subscribe form
+    const subscribeForm = document.getElementById('subscribeForm');
+    const subscribeMsg = document.getElementById('subscribeMsg');
+    subscribeForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      subscribeMsg.textContent = 'Thanks! You are subscribed (demo).';
+      subscribeForm.reset();
+    });
+
+    // Simple carousel for featured (if any)
+    const carouselTracks = document.querySelectorAll('.carousel-track');
+    carouselTracks.forEach(track => {
+      let idx = 0;
+      const slides = track.children.length;
+      setInterval(() => {
+        idx = (idx + 1) % slides;
+        track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+      }, 4200);
+    });
+
+    // GSAP micro animations
+    if(window.gsap){
+      gsap.from("header", {y:-80, duration:0.8, ease:"power2.out"});
+      gsap.utils.toArray('.floaty').forEach((el, i) => {
+        gsap.to(el, { y: -12, duration: 6+i, yoyo:true, repeat:-1, ease:'sine.inOut' });
+      });
+      gsap.utils.toArray('.reveal').forEach((el, i) => {
+        gsap.fromTo(el, { opacity:0, y:20 }, { opacity:1, y:0, duration:0.7, delay: i*0.05, scrollTrigger:{trigger:el, start:'top 85%'} });
+      });
+    }
+
+    // Smooth anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        if(href.length > 1) {
+          const el = document.querySelector(href);
+          if(el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+        }
+      });
+    });
+  </script>
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"RedesCreation",
+    "url":"https://www.redescreation.in",
+    "contactPoint":[
+      { "@type":"ContactPoint", "telephone":"+91 96766 59153", "contactType":"customer service", "areaServed":"IN" }
+    ]
+  }
+  </script>
+
+</body>
+</html>
